@@ -42,3 +42,19 @@ export const signup = async ({name, email, password, photo}) => {
   await user.updateProfile({displayName: name, photoURL});
   return user;
 };
+
+export const getCurrentUser = () => {
+  const {uid, displayName, email, photoURL} = Auth.currentUser;
+  return {uid, name: displayName, email, photo: photoURL};
+};
+
+export const updateUserInfo = async photo => {
+  const photoURL = await uploadImage(photo);
+  Auth.currentUser.updateProfile({photoURL});
+  return photoURL;
+};
+
+export const signout = async () => {
+  await Auth.signOut();
+  return {};
+};
