@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import config from '../firebase.json';
+import 'firebase/firestore';
 
 const app = firebase.initializeApp(config);
 
@@ -57,4 +58,19 @@ export const updateUserInfo = async photo => {
 export const signout = async () => {
   await Auth.signOut();
   return {};
+};
+
+const DB = firebase.firestore();
+
+export const createChannel = async ({title, desc}) => {
+  const newChannelRef = DB.collection('channels').doc();
+  const id = newChannelRef.id;
+  const newChannel = {
+    id,
+    title,
+    description: desc,
+    createAt: Date.now(),
+  };
+  await newChannelRef.set(newChannel);
+  return id;
 };
